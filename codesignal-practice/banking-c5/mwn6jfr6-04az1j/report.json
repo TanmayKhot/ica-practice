@@ -1,0 +1,200 @@
+{
+  "score": 0,
+  "totalWeight": 800,
+  "levelScores": [
+    {
+      "level": 1,
+      "points": 0,
+      "weight": 100,
+      "passed": false
+    },
+    {
+      "level": 2,
+      "points": 0,
+      "weight": 150,
+      "passed": false
+    },
+    {
+      "level": 3,
+      "points": 0,
+      "weight": 250,
+      "passed": false
+    },
+    {
+      "level": 4,
+      "points": 0,
+      "weight": 300,
+      "passed": false
+    }
+  ],
+  "timePerLevel": [
+    {
+      "level": 1,
+      "ms": 5400000,
+      "budgetMs": 600000,
+      "passed": false,
+      "reached": true
+    },
+    {
+      "level": 2,
+      "ms": 0,
+      "budgetMs": 1200000,
+      "passed": false,
+      "reached": false
+    },
+    {
+      "level": 3,
+      "ms": 0,
+      "budgetMs": 1500000,
+      "passed": false,
+      "reached": false
+    },
+    {
+      "level": 4,
+      "ms": 0,
+      "budgetMs": 2100000,
+      "passed": false,
+      "reached": false
+    }
+  ],
+  "timeline": {
+    "durationMs": 5400000,
+    "markers": [],
+    "longestGapMs": 0,
+    "longestGapAfter": null
+  },
+  "refactor": {
+    "available": false,
+    "baseLines": 0,
+    "changedLines": 0,
+    "finalLines": 0
+  },
+  "sessionFailures": {
+    "counts": {
+      "regression": 0,
+      "timeout": 0,
+      "crash": 0,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 0
+    },
+    "total": 0
+  },
+  "allFailures": {
+    "counts": {
+      "regression": 9,
+      "timeout": 0,
+      "crash": 2,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 2,
+      "wrong-logic": 2
+    },
+    "total": 15
+  },
+  "sessionProbes": [],
+  "allProbes": [
+    {
+      "probe": "rank-fewer-than-n",
+      "failed": 11,
+      "sessions": 2
+    },
+    {
+      "probe": "rank-tiebreak-equal-totals",
+      "failed": 11,
+      "sessions": 2
+    },
+    {
+      "probe": "rank-n-zero",
+      "failed": 10,
+      "sessions": 2
+    },
+    {
+      "probe": "transfer-absent-source",
+      "failed": 9,
+      "sessions": 2
+    },
+    {
+      "probe": "transfer-absent-target",
+      "failed": 9,
+      "sessions": 2
+    },
+    {
+      "probe": "create-duplicate",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "delete-then-recreate",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "has-after-delete",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "rate-boundary-exactly-window",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-exceeds-limit",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-independent-keys",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-window-slides",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-within-limit",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rank-empty",
+      "failed": 3,
+      "sessions": 2
+    },
+    {
+      "probe": "record-absent",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "delete-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "has-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-exact-balance",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-insufficient",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-into-self",
+      "failed": 2,
+      "sessions": 1
+    }
+  ],
+  "attemptCount": 3
+}

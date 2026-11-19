@@ -1,0 +1,5113 @@
+{
+  "id": "mwn5uggh-cevzp8",
+  "taskId": "banking-c5",
+  "status": "ended",
+  "startedAt": 1795069186001,
+  "timeLimitMs": 5400000,
+  "code": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    def check_ts(curr, past):\n\n        if abs(past-curr) <= 10:\n            return \"true\"\n        return \"false\"\n\n    past_ts = -1\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n        if query[0] == \"ACTION\":\n            curr = int(query[1])\n            res.append(check_ts(curr, past_ts))\n            past_ts = curr\n\n    return res\n\n\n\n\n",
+  "currentLevel": 4,
+  "unlockedLevel": 4,
+  "levelTimes": {
+    "1": {
+      "unlockedAt": 1795069186001,
+      "passedAt": 1795069191686
+    },
+    "2": {
+      "unlockedAt": 1795069191686,
+      "passedAt": 1795069192602
+    },
+    "3": {
+      "unlockedAt": 1795069192602,
+      "passedAt": 1795069193319
+    },
+    "4": {
+      "unlockedAt": 1795069193319,
+      "passedAt": 1795069848792
+    }
+  },
+  "bestPerLevel": {
+    "1": {
+      "passed": 7,
+      "total": 7
+    },
+    "2": {
+      "passed": 7,
+      "total": 7
+    },
+    "3": {
+      "passed": 7,
+      "total": 7
+    },
+    "4": {
+      "passed": 7,
+      "total": 7
+    }
+  },
+  "submits": [
+    {
+      "id": "mwn5ukue-bt7iby",
+      "at": 1795069191686,
+      "level": 1,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.8000000000029104
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.20000000060827
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 100,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5ulju-3e9f35",
+      "at": 1795069192602,
+      "level": 2,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 2.6000000007115887
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.999999999497959
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.999999999497959
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.4999999993960955
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=7)}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=6)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=10)}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=3)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            ""
+          ],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 250,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5um3r-qlop74",
+      "at": 1795069193319,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 2.4999999995998223
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.900000000205182
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.4999999993960955
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.4999999993960955
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=7)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=6)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=10)}\n",
+          "errorText": null,
+          "durationMs": 1.20000000060827
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=3)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            ""
+          ],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='bob', amount=1, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=2, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5umrh-rhwad9",
+      "at": 1795069194173,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 3.200000000106229
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 2.300000000104774
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.900000000205182
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.6000000005078618
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.5999999995983671
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=7)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=6)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=10)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=3)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            ""
+          ],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='bob', amount=1, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=2, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l4-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l4-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5wwm9-m1w4jr",
+      "at": 1795069300257,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 5
+          },
+          "consoleOutput": "CREATE {}\nGET {}\nCREATE {}\nDELETE {}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 2.199999999902502
+        },
+        {
+          "testId": "l1-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 6
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nGET {}\nDELETE {}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 1
+          },
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 1
+          },
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l1-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "CREATE {}\nDELETE {}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l1-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "CREATE {}\nDELETE {}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "CREATE {}\nRECORD {}\nRECORD {}\nTOP {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 6
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nRECORD {}\nRECORD {}\nRECORD {}\nTOP {}\n",
+          "errorText": null,
+          "durationMs": 1.6999999998006388
+        },
+        {
+          "testId": "l2-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 1
+          },
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 1
+          },
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l2-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "CREATE {}\nRECORD {}\nTOP {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 5
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nRECORD {}\nRECORD {}\nTOP {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "CREATE {}\nRECORD {}\nTOP {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nTRANSFER {}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 6
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nTRANSFER {}\nGET {}\nGET {}\nTRANSFER {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l3-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "CREATE {}\nTRANSFER {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "CREATE {}\nTRANSFER {}\n",
+          "errorText": null,
+          "durationMs": 1.20000000060827
+        },
+        {
+          "testId": "l3-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nTRANSFER {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l3-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 5
+          },
+          "consoleOutput": "CREATE {}\nCREATE {}\nTRANSFER {}\nGET {}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "CREATE {}\nTRANSFER {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l4-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l4-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l4-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l4-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l4-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l4-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l4-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [
+        1,
+        2,
+        3
+      ],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE_AT\":\n            timestamp = query[1]\n            value = query[2]\n            if len(query) == 4:\n                res.append(create(value, query[3]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET_AT\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(get(value))\n\n        if query[0] == \"DELETE_AT\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD_AT\":\n            timestamp = query[1]\n            value = query[3]\n            amount = query[4]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP_AT\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER_AT\":\n            timestamp = query[1]\n            a = query[2]\n            b = query[3]\n            amount = query[4]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5y1uw-tn345l",
+      "at": 1795069353704,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 100, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.4999999993960955
+        },
+        {
+          "testId": "l1-v2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 100, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.6999999998006388
+        },
+        {
+          "testId": "l1-h1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 100, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.5999999995983671
+        },
+        {
+          "testId": "l1-h2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 107, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h3",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 112, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-h4",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 100, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l1-h5",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 100, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-v1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='10', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-v2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='10', amount=0, record=0)}\nRECORD {0: solution.<locals>.Account(name='10', amount=0, record=0), 1: solution.<locals>.Account(name='4', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l2-h1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 123, in solution\n    value = query[2]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h3",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='5', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h4",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='5', amount=0, record=0)}\nRECORD {0: solution.<locals>.Account(name='5', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-h5",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='5', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 117, in solution\n    value = query[3]\n            ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l3-v1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='5', amount=0, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='5', amount=0, record=0), 1: solution.<locals>.Account(name='0', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.20000000060827
+        },
+        {
+          "testId": "l3-v2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='5', amount=0, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='5', amount=0, record=0), 1: solution.<locals>.Account(name='0', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-h1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='1', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l3-h2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='5', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l3-h3",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='2', amount=0, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='2', amount=0, record=0), 1: solution.<locals>.Account(name='0', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l3-h4",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='3', amount=0, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='3', amount=0, record=0), 1: solution.<locals>.Account(name='0', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l3-h5",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='3', amount=0, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 130, in solution\n    amount = query[4]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l4-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l4-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [
+        1,
+        2,
+        3
+      ],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            timestamp = query[1]\n            value = query[2]\n            if len(query) == 4:\n                res.append(create(value, query[3]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(get(value))\n\n        if query[0] == \"DELETE\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD\":\n            timestamp = query[1]\n            value = query[3]\n            amount = query[4]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP\":\n            timestamp = query[1]\n            value = query[2]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER\":\n            timestamp = query[1]\n            a = query[2]\n            b = query[3]\n            amount = query[4]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5zin6-m8chm0",
+      "at": 1795069422114,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.20000000060827
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v2",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h1",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h3",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h4",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h5",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 115, in solution\n    amount = query[3]\n             ~~~~~^^^\nIndexError: list index out of range\n",
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='bob', amount=1, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=2, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l4-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l4-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l4-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l4-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [
+        2
+      ],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD\":\n            value = query[2]\n            amount = query[3]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn5ztj1-qi182s",
+      "at": 1795069436221,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.5000000003055902
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.6999999998006388
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=7)}\n",
+          "errorText": null,
+          "durationMs": 1.8000000000029104
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=6)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=10)}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=3)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            ""
+          ],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='bob', amount=1, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=2, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-v1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l4-v2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 4
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h1",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 2
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l4-h2",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h3",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-h4",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l4-h5",
+          "status": "fail",
+          "actual": [],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": {
+            "kind": "length",
+            "actualLen": 0,
+            "expectedLen": 3
+          },
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 500,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n"
+    },
+    {
+      "id": "mwn68nvc-h7l5ax",
+      "at": 1795069848792,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "0",
+            "false",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 2.599999999802094
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false",
+            "0",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\nDELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.8000000000029104
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "GET {}\n",
+          "errorText": null,
+          "durationMs": 1.5999999995983671
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "DELETE {}\n",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nCREATE {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nDELETE {0: solution.<locals>.Account(name='alice', amount=0, record=0)}\nGET {}\n",
+          "errorText": null,
+          "durationMs": 1.1000000004059984
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "expected": [
+            "true",
+            "3",
+            "7",
+            "alice(7)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=7)}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "6",
+            "10",
+            "bob(10), alice(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=10, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=0), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=0)}\nRECORD {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=6)}\nTOP {0: solution.<locals>.Account(name='alice', amount=10, record=3), 1: solution.<locals>.Account(name='bob', amount=4, record=10)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "RECORD {}\n",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "TOP {}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "expected": [
+            "true",
+            "2",
+            "alice(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "3",
+            "3",
+            "alice(3), bob(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='bob', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=0), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nRECORD {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='bob', amount=5, record=3), 1: solution.<locals>.Account(name='alice', amount=5, record=3)}\n",
+          "errorText": null,
+          "durationMs": 0.9999999992942321
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "2",
+            ""
+          ],
+          "expected": [
+            "true",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nRECORD {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTOP {0: solution.<locals>.Account(name='alice', amount=5, record=2)}\n",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "2",
+            "3",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.8000000007086783
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='bob', amount=1, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=5, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=2, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=2, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "0",
+            "3"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nCREATE {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0), 1: solution.<locals>.Account(name='bob', amount=0, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\nGET {0: solution.<locals>.Account(name='alice', amount=0, record=0), 1: solution.<locals>.Account(name='bob', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 1.0000000002037268
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "false"
+          ],
+          "expected": [
+            "true",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "CREATE {}\nTRANSFER {0: solution.<locals>.Account(name='alice', amount=3, record=0)}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-v1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-v2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h1",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h2",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l4-h3",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l4-h4",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l4-h5",
+          "status": "pass",
+          "actual": [
+            "true",
+            "true",
+            "true"
+          ],
+          "expected": [
+            "true",
+            "true",
+            "true"
+          ],
+          "failureReason": null,
+          "consoleOutput": "ACTION {}\nACTION {}\nACTION {}\n",
+          "errorText": null,
+          "durationMs": 1.999999999497959
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "create-duplicate"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-recreate"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "has-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-equal-totals"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-source"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-absent-target"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-insufficient"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-exact-balance"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "transfer-into-self"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-within-limit"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-exceeds-limit"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-window-slides"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-independent-keys"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "rate-boundary-exactly-window"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 800,
+      "codeSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    def check_ts(curr, past):\n\n        if abs(past-curr) <= 10:\n            return \"true\"\n        return \"false\"\n\n    past_ts = -1\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n\n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n        if query[0] == \"ACTION\":\n            curr = int(query[1])\n            res.append(check_ts(curr, past_ts))\n            past_ts = curr\n\n    return res\n\n\n\n\n"
+    }
+  ],
+  "runCount": 3,
+  "score": 800,
+  "totalWeight": 800,
+  "level1PassSnapshot": "from dataclasses import dataclass\n\ndef solution(queries):\n\n    @dataclass\n    class Account:\n        name: str\n        amount: int = 0\n        record: int = 0\n\n    res = []\n    data = {}\n\n    def create(name, value):\n        for i in data:\n            if data[i].name == name:\n                return \"false\"\n        id = len(data) \n        if value:\n            value = int(value)\n            data[id] = Account(name,int(value))\n        else:\n            data[id] = Account(name)\n        return \"true\"\n    \n    def get(name):\n\n        for i in data:\n            if name == data[i].name:\n                if data[i].amount > 0:\n                    return str(data[i].amount)\n                return str(i)\n        return \"\"\n\n    def delete(name):\n        for i in data:\n            if data[i].name == name:\n                data.pop(i, None)\n                return \"true\"\n        return \"false\"\n        \n    def record(name, amount):\n        for i in data:\n            if data[i].name == name:\n                data[i].record += int(amount)\n                return str(data[i].record)\n        return \"\"\n\n    def top(target):\n        if target == \"0\" or len(data) == 0:\n            return \"\"\n        target = int(target)\n        d = {}\n        for i in data:\n            d[data[i].name] =  data[i].record\n        dd = dict(sorted(d.items(), key=lambda item: (-item[1], item[0])))\n        res = []\n        for i in d:\n            if target > 0:\n                target -= 1\n                item = \"\"\n                item += str(i) + \"(\" + str(d[i]) + \")\"\n                res.append(item)\n        res.reverse()\n        s = \"\"\n        for i in range(len(res)-1):\n            s += res[i] + \", \"\n        s += res[-1]\n        return s\n    \n    def transfer(a, b, amount):\n        if a == b:\n            return \"false\"\n        \n        aid = -1\n        bid = -1\n        amount = int(amount)\n\n        for i in data:\n            if data[i].name == a:\n                if data[i].amount < amount:\n                    \n                    return \"false\"\n                aid = i\n            if data[i].name == b:\n                bid = i\n        \n        if aid == -1 or bid == -1:\n            return \"false\"\n        data[aid].amount -= amount\n        data[bid].amount += amount\n\n        return \"true\"\n\n    for query in queries:\n        print(query[0], data)\n        \n        if query[0] == \"CREATE\":\n            value = query[1]\n            if len(query) == 3:\n                res.append(create(value, query[2]))\n            else:\n                res.append(create(value, \"0\"))\n        if query[0] == \"GET\":\n            value = query[1]\n            res.append(get(value))\n        if query[0] == \"DELETE\":\n            value = query[1]\n            res.append(delete(value))   \n        if query[0] == \"RECORD\":\n            value = query[1]\n            amount = query[2]\n            res.append(record(value, amount))\n        if query[0] == \"TOP\":\n            value = query[1]\n            res.append(top(value))\n        if query[0] == \"TRANSFER\":\n            a = query[1]\n            b = query[2]\n            amount = query[3]\n            res.append(transfer(a,b,amount))\n\n\n    return res\n\n\n\n\n",
+  "endedAt": 1795069848793,
+  "endedReason": "completed"
+}

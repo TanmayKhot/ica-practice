@@ -1,0 +1,367 @@
+{
+  "score": 500,
+  "totalWeight": 800,
+  "levelScores": [
+    {
+      "level": 1,
+      "points": 100,
+      "weight": 100,
+      "passed": true
+    },
+    {
+      "level": 2,
+      "points": 150,
+      "weight": 150,
+      "passed": true
+    },
+    {
+      "level": 3,
+      "points": 250,
+      "weight": 250,
+      "passed": true
+    },
+    {
+      "level": 4,
+      "points": 0,
+      "weight": 300,
+      "passed": false
+    }
+  ],
+  "timePerLevel": [
+    {
+      "level": 1,
+      "ms": 1430726,
+      "budgetMs": 600000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 2,
+      "ms": 2384221,
+      "budgetMs": 1200000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 3,
+      "ms": 1503722,
+      "budgetMs": 1500000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 4,
+      "ms": 81332,
+      "budgetMs": 2100000,
+      "passed": false,
+      "reached": true
+    }
+  ],
+  "timeline": {
+    "durationMs": 5400001,
+    "markers": [
+      {
+        "at": 1795065153509,
+        "offsetMs": 1430726,
+        "level": 1,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795066303753,
+        "offsetMs": 2580970,
+        "level": 1,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795067410633,
+        "offsetMs": 3687850,
+        "level": 2,
+        "passRate": 0.8571428571428571,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795067537730,
+        "offsetMs": 3814947,
+        "level": 2,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795068470732,
+        "offsetMs": 4747949,
+        "level": 3,
+        "passRate": 0.42857142857142855,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068500096,
+        "offsetMs": 4777313,
+        "level": 3,
+        "passRate": 0.42857142857142855,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068531873,
+        "offsetMs": 4809090,
+        "level": 3,
+        "passRate": 0.6666666666666666,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068559823,
+        "offsetMs": 4837040,
+        "level": 3,
+        "passRate": 0.42857142857142855,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068568872,
+        "offsetMs": 4846089,
+        "level": 3,
+        "passRate": 0.6666666666666666,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068636328,
+        "offsetMs": 4913545,
+        "level": 3,
+        "passRate": 0.6666666666666666,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795068723774,
+        "offsetMs": 5000991,
+        "level": 2,
+        "passRate": 0.7142857142857143,
+        "passed": false,
+        "failureClass": "wrong-logic"
+      },
+      {
+        "at": 1795068901675,
+        "offsetMs": 5178892,
+        "level": 2,
+        "passRate": 0.7142857142857143,
+        "passed": false,
+        "failureClass": "wrong-logic"
+      },
+      {
+        "at": 1795068946186,
+        "offsetMs": 5223403,
+        "level": 2,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795068949603,
+        "offsetMs": 5226820,
+        "level": 3,
+        "passRate": 0.9047619047619048,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795069041452,
+        "offsetMs": 5318669,
+        "level": 3,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      }
+    ],
+    "longestGapMs": 1430726,
+    "longestGapAfter": null
+  },
+  "refactor": {
+    "available": true,
+    "baseLines": 39,
+    "changedLines": 11,
+    "finalLines": 129
+  },
+  "sessionFailures": {
+    "counts": {
+      "regression": 6,
+      "timeout": 0,
+      "crash": 2,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 2
+    },
+    "total": 10
+  },
+  "allFailures": {
+    "counts": {
+      "regression": 9,
+      "timeout": 0,
+      "crash": 2,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 2,
+      "wrong-logic": 2
+    },
+    "total": 15
+  },
+  "sessionProbes": [
+    {
+      "probe": "rank-fewer-than-n",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "rank-tiebreak-equal-totals",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "rank-n-zero",
+      "failed": 7,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-absent-source",
+      "failed": 7,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-absent-target",
+      "failed": 7,
+      "sessions": 1
+    },
+    {
+      "probe": "create-duplicate",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "delete-then-recreate",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "has-after-delete",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "rank-empty",
+      "failed": 1,
+      "sessions": 1
+    }
+  ],
+  "allProbes": [
+    {
+      "probe": "rank-fewer-than-n",
+      "failed": 11,
+      "sessions": 2
+    },
+    {
+      "probe": "rank-tiebreak-equal-totals",
+      "failed": 11,
+      "sessions": 2
+    },
+    {
+      "probe": "rank-n-zero",
+      "failed": 10,
+      "sessions": 2
+    },
+    {
+      "probe": "transfer-absent-source",
+      "failed": 9,
+      "sessions": 2
+    },
+    {
+      "probe": "transfer-absent-target",
+      "failed": 9,
+      "sessions": 2
+    },
+    {
+      "probe": "create-duplicate",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "delete-then-recreate",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "has-after-delete",
+      "failed": 5,
+      "sessions": 2
+    },
+    {
+      "probe": "rate-boundary-exactly-window",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-exceeds-limit",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-independent-keys",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-window-slides",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rate-within-limit",
+      "failed": 5,
+      "sessions": 1
+    },
+    {
+      "probe": "rank-empty",
+      "failed": 3,
+      "sessions": 2
+    },
+    {
+      "probe": "record-absent",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "delete-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "has-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-exact-balance",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-insufficient",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "transfer-into-self",
+      "failed": 2,
+      "sessions": 1
+    }
+  ],
+  "attemptCount": 3
+}
