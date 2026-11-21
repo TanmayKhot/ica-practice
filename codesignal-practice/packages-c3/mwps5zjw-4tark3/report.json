@@ -1,0 +1,99 @@
+{
+  "score": 0,
+  "totalWeight": 800,
+  "levelScores": [
+    {
+      "level": 1,
+      "points": 0,
+      "weight": 100,
+      "passed": false
+    },
+    {
+      "level": 2,
+      "points": 0,
+      "weight": 150,
+      "passed": false
+    },
+    {
+      "level": 3,
+      "points": 0,
+      "weight": 250,
+      "passed": false
+    },
+    {
+      "level": 4,
+      "points": 0,
+      "weight": 300,
+      "passed": false
+    }
+  ],
+  "timePerLevel": [
+    {
+      "level": 1,
+      "ms": 77894,
+      "budgetMs": 600000,
+      "passed": false,
+      "reached": true
+    },
+    {
+      "level": 2,
+      "ms": 0,
+      "budgetMs": 1200000,
+      "passed": false,
+      "reached": false
+    },
+    {
+      "level": 3,
+      "ms": 0,
+      "budgetMs": 1500000,
+      "passed": false,
+      "reached": false
+    },
+    {
+      "level": 4,
+      "ms": 0,
+      "budgetMs": 2100000,
+      "passed": false,
+      "reached": false
+    }
+  ],
+  "timeline": {
+    "durationMs": 77894,
+    "markers": [],
+    "longestGapMs": 0,
+    "longestGapAfter": null
+  },
+  "refactor": {
+    "available": false,
+    "baseLines": 0,
+    "changedLines": 0,
+    "finalLines": 0
+  },
+  "sessionFailures": {
+    "counts": {
+      "regression": 0,
+      "timeout": 0,
+      "crash": 0,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 0
+    },
+    "total": 0
+  },
+  "allFailures": {
+    "counts": {
+      "regression": 0,
+      "timeout": 0,
+      "crash": 0,
+      "edge-case": 0,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 0
+    },
+    "total": 0
+  },
+  "sessionProbes": [],
+  "allProbes": [],
+  "attemptCount": 1
+}

@@ -1,7 +1,7 @@
 {
   "id": "mwn6jfr6-04az1j",
   "taskId": "banking-c5",
-  "status": "running",
+  "status": "ended",
   "startedAt": 1795070351490,
   "timeLimitMs": 5400000,
   "code": "def solution(queries):\n    results = []\n    for query in queries:\n        pass\n    return results\n",
@@ -16,5 +16,7 @@
   "submits": [],
   "runCount": 0,
   "score": 0,
-  "totalWeight": 800
+  "totalWeight": 800,
+  "endedAt": 1795156911890,
+  "endedReason": "expired"
 }

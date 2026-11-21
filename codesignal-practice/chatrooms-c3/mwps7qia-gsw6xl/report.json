@@ -1,0 +1,230 @@
+{
+  "score": 800,
+  "totalWeight": 800,
+  "levelScores": [
+    {
+      "level": 1,
+      "points": 100,
+      "weight": 100,
+      "passed": true
+    },
+    {
+      "level": 2,
+      "points": 150,
+      "weight": 150,
+      "passed": true
+    },
+    {
+      "level": 3,
+      "points": 250,
+      "weight": 250,
+      "passed": true
+    },
+    {
+      "level": 4,
+      "points": 300,
+      "weight": 300,
+      "passed": true
+    }
+  ],
+  "timePerLevel": [
+    {
+      "level": 1,
+      "ms": 506766,
+      "budgetMs": 600000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 2,
+      "ms": 1304603,
+      "budgetMs": 1200000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 3,
+      "ms": 1498315,
+      "budgetMs": 1500000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 4,
+      "ms": 1134533,
+      "budgetMs": 2100000,
+      "passed": true,
+      "reached": true
+    }
+  ],
+  "timeline": {
+    "durationMs": 4444218,
+    "markers": [
+      {
+        "at": 1795228196224,
+        "offsetMs": 506766,
+        "level": 1,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795229141585,
+        "offsetMs": 1452127,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795229170288,
+        "offsetMs": 1480830,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795229500827,
+        "offsetMs": 1811369,
+        "level": 2,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795230419986,
+        "offsetMs": 2730528,
+        "level": 3,
+        "passRate": 0.9090909090909091,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795230459435,
+        "offsetMs": 2769977,
+        "level": 3,
+        "passRate": 0.9545454545454546,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795230650956,
+        "offsetMs": 2961498,
+        "level": 3,
+        "passRate": 0.9545454545454546,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795230762673,
+        "offsetMs": 3073215,
+        "level": 3,
+        "passRate": 0.8181818181818182,
+        "passed": false,
+        "failureClass": "wrong-logic"
+      },
+      {
+        "at": 1795230898335,
+        "offsetMs": 3208877,
+        "level": 3,
+        "passRate": 0.9545454545454546,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795230999142,
+        "offsetMs": 3309684,
+        "level": 3,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795232133675,
+        "offsetMs": 4444217,
+        "level": 4,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      }
+    ],
+    "longestGapMs": 1134533,
+    "longestGapAfter": 1795230999142
+  },
+  "refactor": {
+    "available": true,
+    "baseLines": 37,
+    "changedLines": 2,
+    "finalLines": 145
+  },
+  "sessionFailures": {
+    "counts": {
+      "regression": 0,
+      "timeout": 0,
+      "crash": 1,
+      "edge-case": 5,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 1
+    },
+    "total": 7
+  },
+  "allFailures": {
+    "counts": {
+      "regression": 0,
+      "timeout": 0,
+      "crash": 1,
+      "edge-case": 5,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 1
+    },
+    "total": 7
+  },
+  "sessionProbes": [
+    {
+      "probe": "link-into-self",
+      "failed": 4,
+      "sessions": 1
+    },
+    {
+      "probe": "links-cascade-on-delete",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "record-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "link-is-symmetric-and-sorted",
+      "failed": 1,
+      "sessions": 1
+    }
+  ],
+  "allProbes": [
+    {
+      "probe": "link-into-self",
+      "failed": 4,
+      "sessions": 1
+    },
+    {
+      "probe": "links-cascade-on-delete",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "record-absent",
+      "failed": 2,
+      "sessions": 1
+    },
+    {
+      "probe": "link-is-symmetric-and-sorted",
+      "failed": 1,
+      "sessions": 1
+    }
+  ],
+  "attemptCount": 1
+}

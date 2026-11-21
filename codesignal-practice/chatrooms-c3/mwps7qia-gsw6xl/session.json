@@ -1,0 +1,5451 @@
+{
+  "id": "mwps7qia-gsw6xl",
+  "taskId": "chatrooms-c3",
+  "status": "ended",
+  "startedAt": 1795227689458,
+  "timeLimitMs": 5400000,
+  "code": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    expiry = {}\n\n    links = defaultdict(list)\n\n    def set(room, value, timestamp = 0, ttl = -1):\n\n        if ttl != -1:\n            expiry[room] = timestamp + ttl\n\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data or b not in data or (a == b):\n            return \"false\"\n        \n        if a in data and b in data and a in links[b] and b in links[a]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n        if query[0] == \"SET_AT\":\n            timestamp = int(query[1])\n            room = query[2]\n            value = query[3]\n            if len(query) == 4:\n                ttl = 9999999999999999\n            else:\n                ttl = int(query[4])\n            results.append(set(room, value, timestamp, ttl))\n        \n        if query[0] == \"GET_AT\":\n            timestamp = int(query[1])\n            room = query[2]\n            if room not in data or expiry[room] < timestamp:\n                results.append(\"\")\n            else:\n                results.append(get(room))\n\n\n\n\n\n\n\n\n\n    return results\n",
+  "currentLevel": 4,
+  "unlockedLevel": 4,
+  "levelTimes": {
+    "1": {
+      "unlockedAt": 1795227689458,
+      "passedAt": 1795228196224
+    },
+    "2": {
+      "unlockedAt": 1795228196224,
+      "passedAt": 1795229500827
+    },
+    "3": {
+      "unlockedAt": 1795229500827,
+      "passedAt": 1795230999142
+    },
+    "4": {
+      "unlockedAt": 1795230999142,
+      "passedAt": 1795232133675
+    }
+  },
+  "bestPerLevel": {
+    "1": {
+      "passed": 7,
+      "total": 7
+    },
+    "2": {
+      "passed": 7,
+      "total": 7
+    },
+    "3": {
+      "passed": 8,
+      "total": 8
+    },
+    "4": {
+      "passed": 7,
+      "total": 7
+    }
+  },
+  "submits": [
+    {
+      "id": "mwpsilj4-70ua8o",
+      "at": 1795228196224,
+      "level": 1,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000000265572
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000000265572
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6999999999379725
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3000000000383807
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.29999999992469384
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.4000000000132786
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 100,
+      "codeSnapshot": "def solution(queries):\n\n    data = {}\n    results = []\n\n    def set(room, value):\n\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        return \"true\"\n\n    for query in queries:\n        \n        operation = query[0]\n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n    return results\n"
+    },
+    {
+      "id": "mwpt2uz5-vkls8w",
+      "at": 1795229141585,
+      "level": 2,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.099999999951251
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.40000000012696546
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.49999999987448973
+        },
+        {
+          "testId": "l2-h1",
+          "status": "fail",
+          "actual": [
+            1
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": {
+            "kind": "type",
+            "index": 0,
+            "actualType": "number",
+            "expectedType": "string"
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 228,
+      "codeSnapshot": "def solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n\n    def set(room, value):\n\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        return \"true\"\n\n    def record(room):\n        if room not in counts:\n            counts[room] = 1\n            return 1\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            record(query[1])\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            record(query[1])\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            record(query[1])\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwpt3h4g-wfc4bt",
+      "at": 1795229170288,
+      "level": 2,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.1000000001786248
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.5999999998257408
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.49999999987448973
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-h1",
+          "status": "fail",
+          "actual": [
+            1
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": {
+            "kind": "type",
+            "index": 0,
+            "actualType": "number",
+            "expectedType": "string"
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.49999999987448973
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 228,
+      "codeSnapshot": "def solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n\n    def set(room, value):\n\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        return \"true\"\n\n    def record(room):\n        if room not in counts:\n            counts[room] = 1\n            return 1\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n\n        if not counts or n == 0:\n            return \"\"\n            \n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            record(query[1])\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            record(query[1])\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            record(query[1])\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwptak63-yx70e9",
+      "at": 1795229500827,
+      "level": 2,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.199999999926149
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6999999998242856
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.6000000000767614
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.40000000012696546
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 250,
+      "codeSnapshot": "def solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n\n        if not counts or n == 0:\n            return \"\"\n\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwptu9ea-2lnvt6",
+      "at": 1795230419986,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.6999999998006388
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.4999999998508429
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.1999999996987754
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.099999999951251
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h3",
+          "status": "fail",
+          "actual": [
+            "",
+            "true"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 1
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h6",
+          "status": "error",
+          "actual": null,
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": "Traceback (most recent call last):\n  File \"solution.py\", line 91, in solution\n    results.append(delete(room))\n                   ~~~~~~^^^^^^\n  File \"solution.py\", line 32, in delete\n    links[i].remove(room, None)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^\nTypeError: list.remove() takes exactly one argument (2 given)\n",
+          "durationMs": 0.9000000000014552
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 437,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room, None)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data:\n            return \"false\"\n        if b not in data:\n            return \"false\"\n        if b in links[a] or a in links[b]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwptv3u3-dshgqh",
+      "at": 1795230459435,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.099999999951251
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9999999997489795
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h3",
+          "status": "fail",
+          "actual": [
+            "",
+            "true"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 1
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h6",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 468,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data:\n            return \"false\"\n        if b not in data:\n            return \"false\"\n        if b in links[a] or a in links[b]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwptz7m4-t5uu2k",
+      "at": 1795230650956,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9999999997489795
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9999999997489795
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8999999995467078
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l3-h3",
+          "status": "fail",
+          "actual": [
+            "",
+            "true"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 1
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h6",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.49999999964711606
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 468,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data:\n            return \"false\"\n        if b not in data:\n            return \"false\"\n        if b in links[a] or a in links[b]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n             \n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwpu1ltd-i9r7fk",
+      "at": 1795230762673,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.4999999998508429
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.2000000001535227
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000002539309
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000002539309
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-v1",
+          "status": "fail",
+          "actual": [
+            "",
+            "",
+            "false",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 2
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-v2",
+          "status": "fail",
+          "actual": [
+            "",
+            "",
+            "",
+            "false",
+            "false",
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 3
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l3-h5",
+          "status": "fail",
+          "actual": [
+            "",
+            "",
+            "",
+            "false",
+            "false",
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 3
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h6",
+          "status": "fail",
+          "actual": [
+            "",
+            "",
+            "false",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 2
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 468,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data:\n            return \"false\"\n        if b not in data:\n            return \"false\"\n        if a not in links[b]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwpu4ihr-c89yo4",
+      "at": 1795230898335,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.2000000001535227
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.099999999951251
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.2000000001535227
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.2000000001535227
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9999999997489795
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.49999999964711606
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000002539309
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h3",
+          "status": "fail",
+          "actual": [
+            "",
+            "true"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": {
+            "kind": "value",
+            "index": 1
+          },
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h6",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": false,
+      "brokenLevels": [],
+      "scoreAfter": 468,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data or b not in data:\n            return \"false\"\n        \n        if a in data and b in data and a in links[b] and b in links[a]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwpu6o9y-povv3w",
+      "at": 1795230999142,
+      "level": 3,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.299999999901047
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9999999997489795
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.8000000002539309
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.2000000001535227
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000000516593
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.699999999596912
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.4000000001033186
+        },
+        {
+          "testId": "l3-h6",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999998493877
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 500,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    links = defaultdict(list)\n\n    def set(room, value):\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data or b not in data or (a == b):\n            return \"false\"\n        \n        if a in data and b in data and a in links[b] and b in links[a]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    },
+    {
+      "id": "mwpuuzor-a1cgbp",
+      "at": 1795232133675,
+      "level": 4,
+      "results": [
+        {
+          "testId": "l1-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "alpha",
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "",
+            "omega",
+            "true",
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.9000000000014552
+        },
+        {
+          "testId": "l1-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999993946403
+        },
+        {
+          "testId": "l1-h2",
+          "status": "pass",
+          "actual": [
+            "false"
+          ],
+          "expected": [
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999993946403
+        },
+        {
+          "testId": "l1-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "y"
+          ],
+          "expected": [
+            "",
+            "",
+            "y"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l1-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l1-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "expected": [
+            "",
+            "true",
+            "",
+            "b"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "3",
+            "2",
+            "random(3), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l2-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "3",
+            "random(3), random2(2)",
+            "random(3)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999993946403
+        },
+        {
+          "testId": "l2-h1",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.3999999998995918
+        },
+        {
+          "testId": "l2-h2",
+          "status": "pass",
+          "actual": [
+            ""
+          ],
+          "expected": [
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "expected": [
+            "",
+            "2",
+            "random(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l2-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "expected": [
+            "",
+            "",
+            "2",
+            "2",
+            "random(2), random2(2)"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l2-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "2",
+            ""
+          ],
+          "expected": [
+            "",
+            "2",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5999999993946403
+        },
+        {
+          "testId": "l3-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "random2"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7999999997991836
+        },
+        {
+          "testId": "l3-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.7000000005064066
+        },
+        {
+          "testId": "l3-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 1.0999999994965037
+        },
+        {
+          "testId": "l3-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "false"
+          ],
+          "expected": [
+            "",
+            "false"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            ""
+          ],
+          "expected": [
+            "",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l3-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "expected": [
+            "",
+            "",
+            "",
+            "true",
+            "true",
+            "random2, random3",
+            "random"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l3-h6",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "expected": [
+            "",
+            "",
+            "true",
+            "true",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.4999999991923687
+        },
+        {
+          "testId": "l4-v1",
+          "status": "pass",
+          "actual": [
+            "",
+            "5",
+            "5"
+          ],
+          "expected": [
+            "",
+            "5",
+            "5"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l4-v2",
+          "status": "pass",
+          "actual": [
+            "",
+            "5",
+            "5",
+            ""
+          ],
+          "expected": [
+            "",
+            "5",
+            "5",
+            ""
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l4-h1",
+          "status": "pass",
+          "actual": [
+            "",
+            "1",
+            "1"
+          ],
+          "expected": [
+            "",
+            "1",
+            "1"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        },
+        {
+          "testId": "l4-h2",
+          "status": "pass",
+          "actual": [
+            "",
+            "1"
+          ],
+          "expected": [
+            "",
+            "1"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l4-h3",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "1",
+            "1"
+          ],
+          "expected": [
+            "",
+            "",
+            "1",
+            "1"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.5000000001018634
+        },
+        {
+          "testId": "l4-h4",
+          "status": "pass",
+          "actual": [
+            "",
+            "",
+            "1"
+          ],
+          "expected": [
+            "",
+            "",
+            "1"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.4999999991923687
+        },
+        {
+          "testId": "l4-h5",
+          "status": "pass",
+          "actual": [
+            "",
+            "1",
+            "1"
+          ],
+          "expected": [
+            "",
+            "1",
+            "1"
+          ],
+          "failureReason": null,
+          "consoleOutput": "",
+          "errorText": null,
+          "durationMs": 0.600000000304135
+        }
+      ],
+      "tests": [
+        {
+          "id": "l1-v1",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-v2",
+          "level": 1,
+          "hidden": false
+        },
+        {
+          "id": "l1-h1",
+          "level": 1,
+          "hidden": true,
+          "probes": "get-absent"
+        },
+        {
+          "id": "l1-h2",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-absent"
+        },
+        {
+          "id": "l1-h3",
+          "level": 1,
+          "hidden": true,
+          "probes": "overwrite-last-write-wins"
+        },
+        {
+          "id": "l1-h4",
+          "level": 1,
+          "hidden": true,
+          "probes": "delete-then-get"
+        },
+        {
+          "id": "l1-h5",
+          "level": 1,
+          "hidden": true,
+          "probes": "recreate-after-delete"
+        },
+        {
+          "id": "l2-v1",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-v2",
+          "level": 2,
+          "hidden": false
+        },
+        {
+          "id": "l2-h1",
+          "level": 2,
+          "hidden": true,
+          "probes": "record-absent"
+        },
+        {
+          "id": "l2-h2",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-empty"
+        },
+        {
+          "id": "l2-h3",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-fewer-than-n"
+        },
+        {
+          "id": "l2-h4",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-tiebreak-by-name"
+        },
+        {
+          "id": "l2-h5",
+          "level": 2,
+          "hidden": true,
+          "probes": "rank-n-zero"
+        },
+        {
+          "id": "l3-v1",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-v2",
+          "level": 3,
+          "hidden": false
+        },
+        {
+          "id": "l3-h1",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-a"
+        },
+        {
+          "id": "l3-h2",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-absent-b"
+        },
+        {
+          "id": "l3-h3",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-into-self"
+        },
+        {
+          "id": "l3-h4",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-empty"
+        },
+        {
+          "id": "l3-h5",
+          "level": 3,
+          "hidden": true,
+          "probes": "link-is-symmetric-and-sorted"
+        },
+        {
+          "id": "l3-h6",
+          "level": 3,
+          "hidden": true,
+          "probes": "links-cascade-on-delete"
+        },
+        {
+          "id": "l4-v1",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-v2",
+          "level": 4,
+          "hidden": false
+        },
+        {
+          "id": "l4-h1",
+          "level": 4,
+          "hidden": true,
+          "probes": "ttl-expires-at-boundary"
+        },
+        {
+          "id": "l4-h2",
+          "level": 4,
+          "hidden": true,
+          "probes": "ttl-absent-means-permanent"
+        },
+        {
+          "id": "l4-h3",
+          "level": 4,
+          "hidden": true,
+          "probes": "ttl-refresh-on-recreate"
+        },
+        {
+          "id": "l4-h4",
+          "level": 4,
+          "hidden": true,
+          "probes": "ttl-recreate-without-ttl-keeps-expiry"
+        },
+        {
+          "id": "l4-h5",
+          "level": 4,
+          "hidden": true,
+          "probes": "ttl-untimed-uses-latest-timestamp"
+        }
+      ],
+      "passed": true,
+      "brokenLevels": [],
+      "scoreAfter": 800,
+      "codeSnapshot": "from collections import defaultdict\n\n# Define the dictionary with a default value of list\n\n\ndef solution(queries):\n\n    data = {}\n    counts = {}\n    results = []\n    expiry = {}\n\n    links = defaultdict(list)\n\n    def set(room, value, timestamp = 0, ttl = -1):\n\n        if ttl != -1:\n            expiry[room] = timestamp + ttl\n\n        if room not in counts:\n            counts[room] = 1\n        data[room] = value\n        return \"\"\n\n    def get(room):\n\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        counts.pop(room, None)\n        links.pop(room, None)\n        for i in links:\n            if room in links[i]:\n                links[i].remove(room)\n\n        return \"true\"\n\n    def record(room):\n        if room not in data:\n            return \"\"\n        counts[room] += 1\n        return str(counts[room])\n\n    def top(n):\n        if not counts or n == 0:\n            return \"\"\n        res = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))\n        s = \"\"\n        t = 0\n        for i in res.keys():\n            if t < n:\n                item = i + \"(\" + str(counts[i]) + \"), \"\n                s += item\n                t += 1\n        return s[:-2]\n\n    def link(a, b):\n\n        if a not in data or b not in data or (a == b):\n            return \"false\"\n        \n        if a in data and b in data and a in links[b] and b in links[a]:\n            return \"false\"\n        \n        links[a].append(b)\n        links[b].append(a)\n\n        return \"true\"\n    \n    def get_links(a):\n\n        if a not in data or not links[a]:\n            return \"\"\n\n        s = \"\"\n        r = sorted(links[a])\n        for i in r:\n            s += i + \", \"\n        \n        return s[:-2]\n\n    for query in queries:\n        \n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n        if query[0] == \"RECORD\":\n            room = query[1]\n            results.append(record(room))\n\n        if query[0] == \"TOP\":\n            n = int(query[1])\n            results.append(top(n))\n\n        if query[0] == \"LINK\":\n            a = query[1]\n            b = query[2]\n            results.append(link(a,b))\n        \n        if query[0] == \"LINKS\":\n            results.append(get_links(query[1]))\n\n        if query[0] == \"SET_AT\":\n            timestamp = int(query[1])\n            room = query[2]\n            value = query[3]\n            if len(query) == 4:\n                ttl = 9999999999999999\n            else:\n                ttl = int(query[4])\n            results.append(set(room, value, timestamp, ttl))\n        \n        if query[0] == \"GET_AT\":\n            timestamp = int(query[1])\n            room = query[2]\n            if room not in data or expiry[room] < timestamp:\n                results.append(\"\")\n            else:\n                results.append(get(room))\n\n\n\n\n\n\n\n\n\n    return results\n"
+    }
+  ],
+  "runCount": 59,
+  "score": 800,
+  "totalWeight": 800,
+  "level1PassSnapshot": "def solution(queries):\n\n    data = {}\n    results = []\n\n    def set(room, value):\n\n        data[room] = value\n        return \"\"\n\n    def get(room):\n        if room not in data:\n            return \"\"\n        return data[room]\n\n    def delete(room):\n        if room not in data:\n            return \"false\"\n        data.pop(room, None)\n        return \"true\"\n\n    for query in queries:\n        \n        operation = query[0]\n        if query[0] == \"SET\":\n            room = query[1]\n            value = query[2]\n            results.append(set(room, value))\n        if query[0] == \"GET\":\n            room = query[1]\n            results.append(get(room))\n        if query[0] == \"DELETE\":\n            room = query[1]\n            results.append(delete(room))\n\n    return results\n",
+  "endedAt": 1795232133676,
+  "endedReason": "completed"
+}

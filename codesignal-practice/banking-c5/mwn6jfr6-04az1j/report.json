@@ -30,7 +30,7 @@
   "timePerLevel": [
     {
       "level": 1,
-      "ms": 5400000,
+      "ms": 86560400,
       "budgetMs": 600000,
       "passed": false,
       "reached": true
@@ -58,7 +58,7 @@
     }
   ],
   "timeline": {
-    "durationMs": 5400000,
+    "durationMs": 86560400,
     "markers": [],
     "longestGapMs": 0,
     "longestGapAfter": null

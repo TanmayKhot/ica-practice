@@ -1,0 +1,366 @@
+{
+  "score": 500,
+  "totalWeight": 800,
+  "levelScores": [
+    {
+      "level": 1,
+      "points": 100,
+      "weight": 100,
+      "passed": true
+    },
+    {
+      "level": 2,
+      "points": 150,
+      "weight": 150,
+      "passed": true
+    },
+    {
+      "level": 3,
+      "points": 250,
+      "weight": 250,
+      "passed": true
+    },
+    {
+      "level": 4,
+      "points": 0,
+      "weight": 300,
+      "passed": false
+    }
+  ],
+  "timePerLevel": [
+    {
+      "level": 1,
+      "ms": 613596,
+      "budgetMs": 600000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 2,
+      "ms": 2360989,
+      "budgetMs": 1200000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 3,
+      "ms": 1076834,
+      "budgetMs": 1500000,
+      "passed": true,
+      "reached": true
+    },
+    {
+      "level": 4,
+      "ms": 1405838,
+      "budgetMs": 2100000,
+      "passed": false,
+      "reached": true
+    }
+  ],
+  "timeline": {
+    "durationMs": 5457257,
+    "markers": [
+      {
+        "at": 1795157531891,
+        "offsetMs": 613596,
+        "level": 1,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795158703462,
+        "offsetMs": 1785167,
+        "level": 2,
+        "passRate": 0.7857142857142857,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795158761902,
+        "offsetMs": 1843607,
+        "level": 2,
+        "passRate": 0.7857142857142857,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795158768248,
+        "offsetMs": 1849953,
+        "level": 2,
+        "passRate": 0.7857142857142857,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795158781211,
+        "offsetMs": 1862916,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795158837524,
+        "offsetMs": 1919229,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159208745,
+        "offsetMs": 2290450,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159209796,
+        "offsetMs": 2291501,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159216019,
+        "offsetMs": 2297724,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159236790,
+        "offsetMs": 2318495,
+        "level": 2,
+        "passRate": 0.7857142857142857,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159273946,
+        "offsetMs": 2355651,
+        "level": 2,
+        "passRate": 0.7857142857142857,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795159279116,
+        "offsetMs": 2360821,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795159343261,
+        "offsetMs": 2424966,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795159363976,
+        "offsetMs": 2445681,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795159388825,
+        "offsetMs": 2470530,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159402612,
+        "offsetMs": 2484317,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "crash"
+      },
+      {
+        "at": 1795159423803,
+        "offsetMs": 2505508,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159798019,
+        "offsetMs": 2879724,
+        "level": 2,
+        "passRate": 0.9285714285714286,
+        "passed": false,
+        "failureClass": "edge-case"
+      },
+      {
+        "at": 1795159892880,
+        "offsetMs": 2974585,
+        "level": 2,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      },
+      {
+        "at": 1795160734324,
+        "offsetMs": 3816029,
+        "level": 3,
+        "passRate": 0.42857142857142855,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795160759044,
+        "offsetMs": 3840749,
+        "level": 3,
+        "passRate": 0.6666666666666666,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795160839800,
+        "offsetMs": 3921505,
+        "level": 3,
+        "passRate": 0.6666666666666666,
+        "passed": false,
+        "failureClass": "regression"
+      },
+      {
+        "at": 1795160969714,
+        "offsetMs": 4051419,
+        "level": 3,
+        "passRate": 1,
+        "passed": true,
+        "failureClass": null
+      }
+    ],
+    "longestGapMs": 1171571,
+    "longestGapAfter": 1795157531891
+  },
+  "refactor": {
+    "available": true,
+    "baseLines": 45,
+    "changedLines": 4,
+    "finalLines": 91
+  },
+  "sessionFailures": {
+    "counts": {
+      "regression": 3,
+      "timeout": 0,
+      "crash": 7,
+      "edge-case": 10,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 0
+    },
+    "total": 20
+  },
+  "allFailures": {
+    "counts": {
+      "regression": 3,
+      "timeout": 0,
+      "crash": 7,
+      "edge-case": 10,
+      "wrong-type": 0,
+      "length": 0,
+      "wrong-logic": 0
+    },
+    "total": 20
+  },
+  "sessionProbes": [
+    {
+      "probe": "recent-fewer-than-n",
+      "failed": 20,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-empty",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-n-zero",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-order-newest-first",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-touch-updates-order",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "create-duplicate",
+      "failed": 1,
+      "sessions": 1
+    },
+    {
+      "probe": "delete-then-recreate",
+      "failed": 1,
+      "sessions": 1
+    },
+    {
+      "probe": "has-after-delete",
+      "failed": 1,
+      "sessions": 1
+    }
+  ],
+  "allProbes": [
+    {
+      "probe": "recent-fewer-than-n",
+      "failed": 20,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-empty",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-n-zero",
+      "failed": 8,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-order-newest-first",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "recent-touch-updates-order",
+      "failed": 3,
+      "sessions": 1
+    },
+    {
+      "probe": "create-duplicate",
+      "failed": 1,
+      "sessions": 1
+    },
+    {
+      "probe": "delete-then-recreate",
+      "failed": 1,
+      "sessions": 1
+    },
+    {
+      "probe": "has-after-delete",
+      "failed": 1,
+      "sessions": 1
+    }
+  ],
+  "attemptCount": 1
+}
